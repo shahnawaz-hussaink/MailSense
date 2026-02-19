@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --sidebar-width: 240px;
+  }
+
+  * {
+    @apply border-surface-800;
+  }
+
+  html {
+    @apply antialiased;
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-surface-950 text-slate-100 font-sans;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  ::selection {
+    @apply bg-brand-600/40 text-white;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar        { @apply w-1.5 h-1.5; }
+  ::-webkit-scrollbar-track  { @apply bg-surface-900; }
+  ::-webkit-scrollbar-thumb  { @apply bg-surface-800 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-surface-200/20; }
+}
+
+@layer components {
+  /* ── Glass card ── */
+  .card {
+    @apply bg-surface-900/80 border border-surface-800 rounded-xl backdrop-blur-sm;
+  }
+
+  /* ── Input base ── */
+  .input {
+    @apply w-full bg-surface-900 border border-surface-800 rounded-lg px-3.5 py-2.5
+           text-sm text-slate-100 placeholder-slate-500 transition-all duration-150
+           focus:outline-none focus:border-brand-600/50;
+  }
+
+  /* ── Button base ── */
+  .btn {
+    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium
+           transition-all duration-150 cursor-pointer;
+  }
+
+  /* ── Badge ── */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  /* ── Skeleton shimmer placeholder ── */
+  .skeleton {
+    @apply bg-surface-800 overflow-hidden relative rounded-md;
+  }
+
+  /* ── Page titles ── */
+  .page-title {
+    @apply text-2xl font-semibold tracking-tight text-slate-100;
+  }
+  .page-subtitle {
+    @apply text-sm text-slate-400 mt-1;
+  }
+}
+
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-brand-400 to-violet-400 bg-clip-text text-transparent;
+  }
+  .glow-dot {
+    @apply w-2 h-2 rounded-full bg-brand-500 shadow-[0_0_8px_2px_rgba(100,112,243,0.6)];
+  }
+}
