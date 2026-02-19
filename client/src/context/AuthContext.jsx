@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { account } from '@/lib/appwrite';
+import { account, isConfigured } from '@/lib/appwrite';
 import { OAuthProvider } from 'appwrite';
 
 const AuthContext = createContext(null);
@@ -9,6 +9,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   const fetchUser = useCallback(async () => {
+    // Skip SDK calls if env vars are not configured
+    if (!isConfigured) {
+      setLoading(false);
+      return;
+    }
     try {
       const u = await account.get();
       setUser(u);
@@ -22,6 +27,7 @@ export function AuthProvider({ children }) {
   useEffect(() => { fetchUser(); }, [fetchUser]);
 
   const loginWithGoogle = () => {
+    if (!isConfigured) return;
     account.createOAuth2Session(
       OAuthProvider.Google,
       `${window.location.origin}/home`,
@@ -30,11 +36,13 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
+    if (!isConfigured) return;
     try { await account.deleteSession('current'); } catch {}
     setUser(null);
   };
 
   const getJWT = async () => {
+    if (!isConfigured) return null;
     try {
       const jwt = await account.createJWT();
       return jwt.jwt;
@@ -42,7 +50,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginWithGoogle, logout, getJWT, refetch: fetchUser }}>
+    <AuthContext.Provider value={{ user, loading, loginWithGoogle, logout, getJWT, refetch: fetchUser, isConfigured }}>
       {children}
     </AuthContext.Provider>
   );
