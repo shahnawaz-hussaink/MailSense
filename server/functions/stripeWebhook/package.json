@@ -1,0 +1,11 @@
+{
+  "name": "mailsense-stripe-webhook",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/main.js",
+  "engines": { "node": ">=21.0.0" },
+  "dependencies": {
+    "node-appwrite": "^14.0.0",
+    "stripe": "^16.0.0"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://appwrite.io/schema/1.0/function.json",
+  "name": "deleteAccount",
+  "runtime": "node-21",
+  "execute": ["users"],
+  "events": [],
+  "timeout": 60,
+  "logging": true,
+  "entrypoint": "src/main.js",
+  "commands": "npm install",
+  "scopes": [
+    "databases.read",
+    "databases.write",
+    "users.read",
+    "users.write"
+  ],
+  "ignore": ["node_modules", ".env"]
+}
