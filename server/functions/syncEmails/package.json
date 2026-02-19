@@ -1,0 +1,15 @@
+{
+  "name": "mailsense-sync-emails",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Appwrite Function — incremental Gmail sync using History API",
+  "main": "src/main.js",
+  "engines": {
+    "node": ">=21.0.0"
+  },
+  "dependencies": {
+    "node-appwrite": "^14.0.0",
+    "googleapis": "^144.0.0",
+    "crypto-js": "^4.2.0"
+  }
+}
