@@ -1,0 +1,17 @@
+{
+  "$schema": "https://appwrite.io/schema/1.0/function.json",
+  "name": "extractEntities",
+  "runtime": "node-21",
+  "execute": ["users"],
+  "events": [],
+  "schedule": "*/15 * * * *",
+  "timeout": 300,
+  "logging": true,
+  "entrypoint": "src/main.js",
+  "commands": "npm install",
+  "scopes": [
+    "databases.read",
+    "databases.write"
+  ],
+  "ignore": ["node_modules", ".env"]
+}

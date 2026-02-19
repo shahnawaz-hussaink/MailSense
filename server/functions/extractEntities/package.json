@@ -1,0 +1,11 @@
+{
+  "name": "mailsense-extract-entities",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/main.js",
+  "engines": { "node": ">=21.0.0" },
+  "dependencies": {
+    "node-appwrite": "^14.0.0",
+    "openai": "^4.0.0"
+  }
+}
