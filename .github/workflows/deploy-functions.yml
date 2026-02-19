@@ -1,0 +1,85 @@
+name: Deploy Appwrite Functions
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'server/functions/**'
+
+jobs:
+  deploy-functions:
+    name: Deploy to Appwrite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21'
+
+      - name: Install Appwrite CLI
+        run: npm install -g appwrite-cli@latest
+
+      - name: Deploy authOnCreate
+        run: |
+          appwrite deploy function \
+            --functionId authOnCreate \
+            --path server/functions/authOnCreate
+        env:
+          APPWRITE_ENDPOINT:   ${{ secrets.APPWRITE_ENDPOINT }}
+          APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
+          APPWRITE_API_KEY:    ${{ secrets.APPWRITE_API_KEY }}
+
+      - name: Deploy syncEmails
+        run: |
+          appwrite deploy function \
+            --functionId syncEmails \
+            --path server/functions/syncEmails
+        env:
+          APPWRITE_ENDPOINT:   ${{ secrets.APPWRITE_ENDPOINT }}
+          APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
+          APPWRITE_API_KEY:    ${{ secrets.APPWRITE_API_KEY }}
+
+      - name: Deploy extractEntities
+        run: |
+          appwrite deploy function \
+            --functionId extractEntities \
+            --path server/functions/extractEntities
+        env:
+          APPWRITE_ENDPOINT:   ${{ secrets.APPWRITE_ENDPOINT }}
+          APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
+          APPWRITE_API_KEY:    ${{ secrets.APPWRITE_API_KEY }}
+
+      - name: Deploy aiQuery
+        run: |
+          appwrite deploy function \
+            --functionId aiQuery \
+            --path server/functions/aiQuery
+        env:
+          APPWRITE_ENDPOINT:   ${{ secrets.APPWRITE_ENDPOINT }}
+          APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
+          APPWRITE_API_KEY:    ${{ secrets.APPWRITE_API_KEY }}
+
+      - name: Deploy stripeWebhook
+        run: |
+          appwrite deploy function \
+            --functionId stripeWebhook \
+            --path server/functions/stripeWebhook
+        env:
+          APPWRITE_ENDPOINT:   ${{ secrets.APPWRITE_ENDPOINT }}
+          APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
+          APPWRITE_API_KEY:    ${{ secrets.APPWRITE_API_KEY }}
+
+      - name: Deploy deleteAccount
+        run: |
+          appwrite deploy function \
+            --functionId deleteAccount \
+            --path server/functions/deleteAccount
+        env:
+          APPWRITE_ENDPOINT:   ${{ secrets.APPWRITE_ENDPOINT }}
+          APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
+          APPWRITE_API_KEY:    ${{ secrets.APPWRITE_API_KEY }}

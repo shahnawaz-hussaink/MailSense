@@ -1,0 +1,119 @@
+{
+  "projectId": "mailsense",
+  "databaseId": "mailsense_db",
+  "collections": [
+
+    {
+      "id": "users",
+      "name": "users",
+      "documentSecurity": false,
+      "permissions": ["read(\"users\")", "create(\"any\")"],
+      "attributes": [
+        { "key": "appwriteUserId",         "type": "string",   "size": 36,    "required": true  },
+        { "key": "email",                   "type": "string",   "size": 255,   "required": true  },
+        { "key": "name",                    "type": "string",   "size": 255,   "required": true  },
+        { "key": "avatarUrl",               "type": "string",   "size": 512,   "required": false },
+        { "key": "googleAccessTokenEnc",    "type": "string",   "size": 2048,  "required": false },
+        { "key": "googleRefreshTokenEnc",   "type": "string",   "size": 2048,  "required": false },
+        { "key": "tokenExpiresAt",          "type": "datetime",               "required": false },
+        { "key": "gmailHistoryId",          "type": "string",   "size": 64,    "required": false, "default": "" },
+        { "key": "lastSyncedAt",            "type": "datetime",               "required": false },
+        { "key": "syncStatus",              "type": "string",   "size": 16,    "required": true,  "default": "idle" },
+        { "key": "plan",                    "type": "string",   "size": 16,    "required": true,  "default": "free" },
+        { "key": "stripeCustomerId",        "type": "string",   "size": 64,    "required": false, "default": "" }
+      ],
+      "indexes": [
+        { "key": "uid_unique",   "type": "unique", "attributes": ["appwriteUserId"] },
+        { "key": "email_unique", "type": "unique", "attributes": ["email"] },
+        { "key": "stripe_cust",  "type": "key",    "attributes": ["stripeCustomerId"] }
+      ]
+    },
+
+    {
+      "id": "emails",
+      "name": "emails",
+      "documentSecurity": true,
+      "permissions": [],
+      "attributes": [
+        { "key": "userId",          "type": "string",   "size": 36,    "required": true  },
+        { "key": "gmailId",         "type": "string",   "size": 64,    "required": true  },
+        { "key": "threadId",        "type": "string",   "size": 64,    "required": true  },
+        { "key": "historyId",       "type": "string",   "size": 64,    "required": false, "default": "" },
+        { "key": "from",            "type": "string",   "size": 512,   "required": true  },
+        { "key": "to",              "type": "string",   "size": 512,   "required": false, "default": "" },
+        { "key": "subject",         "type": "string",   "size": 998,   "required": false, "default": "" },
+        { "key": "body",            "type": "string",   "size": 65535, "required": false, "default": "" },
+        { "key": "snippet",         "type": "string",   "size": 512,   "required": false, "default": "" },
+        { "key": "timestamp",       "type": "datetime",               "required": true  },
+        { "key": "labels",          "type": "string",   "size": 64,    "required": false, "array": true },
+        { "key": "hasAttachments",  "type": "boolean",                "required": true,  "default": false },
+        { "key": "sizeEstimate",    "type": "integer",                "required": false, "default": 0 },
+        { "key": "processed",       "type": "boolean",                "required": true,  "default": false },
+        { "key": "processingError", "type": "string",   "size": 512,   "required": false, "default": "" }
+      ],
+      "indexes": [
+        { "key": "gmail_dedup",   "type": "unique", "attributes": ["userId", "gmailId"] },
+        { "key": "user_time",     "type": "key",    "attributes": ["userId", "timestamp"],  "orders": ["ASC", "DESC"] },
+        { "key": "user_proc",     "type": "key",    "attributes": ["userId", "processed"]   },
+        { "key": "fulltext_subj", "type": "fulltext","attributes": ["subject"] }
+      ]
+    },
+
+    {
+      "id": "extracted_entities",
+      "name": "extracted_entities",
+      "documentSecurity": true,
+      "permissions": [],
+      "attributes": [
+        { "key": "userId",     "type": "string",  "size": 36,    "required": true  },
+        { "key": "emailId",    "type": "string",  "size": 36,    "required": true  },
+        { "key": "type",       "type": "string",  "size": 32,    "required": true  },
+        { "key": "value",      "type": "string",  "size": 512,   "required": true  },
+        { "key": "confidence", "type": "double",               "required": true  },
+        { "key": "metadata",   "type": "string",  "size": 16383, "required": false, "default": "{}" },
+        { "key": "createdAt",  "type": "datetime",             "required": true  }
+      ],
+      "indexes": [
+        { "key": "user_type",    "type": "key",     "attributes": ["userId", "type"] },
+        { "key": "user_email",   "type": "key",     "attributes": ["userId", "emailId"] },
+        { "key": "user_type_ts", "type": "key",     "attributes": ["userId", "type", "createdAt"] },
+        { "key": "fulltext_val", "type": "fulltext","attributes": ["value"] }
+      ]
+    },
+
+    {
+      "id": "subscriptions",
+      "name": "subscriptions",
+      "documentSecurity": true,
+      "permissions": [],
+      "attributes": [
+        { "key": "userId",               "type": "string",   "size": 36,  "required": true  },
+        { "key": "stripeSubscriptionId", "type": "string",   "size": 64,  "required": false, "default": "" },
+        { "key": "plan",                 "type": "string",   "size": 16,  "required": true,  "default": "free" },
+        { "key": "status",               "type": "string",   "size": 32,  "required": true,  "default": "active" },
+        { "key": "currentPeriodEnd",     "type": "datetime",             "required": false },
+        { "key": "cancelAtPeriodEnd",    "type": "boolean",              "required": true,  "default": false },
+        { "key": "updatedAt",            "type": "datetime",             "required": true  }
+      ],
+      "indexes": [
+        { "key": "userid_unique", "type": "unique", "attributes": ["userId"] },
+        { "key": "stripe_sub",    "type": "key",    "attributes": ["stripeSubscriptionId"] }
+      ]
+    },
+
+    {
+      "id": "rate_limit_log",
+      "name": "rate_limit_log",
+      "documentSecurity": false,
+      "permissions": [],
+      "attributes": [
+        { "key": "userId",    "type": "string",   "size": 36, "required": true },
+        { "key": "key",       "type": "string",   "size": 64, "required": true },
+        { "key": "createdAt", "type": "datetime",             "required": true }
+      ],
+      "indexes": [
+        { "key": "user_key_ts", "type": "key", "attributes": ["userId", "key", "createdAt"] }
+      ]
+    }
+  ]
+}
