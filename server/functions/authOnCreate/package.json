@@ -1,0 +1,14 @@
+{
+  "name": "mailsense-auth-on-create",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Appwrite Function — stores Google tokens + creates user/subscription records on signup",
+  "main": "src/main.js",
+  "engines": {
+    "node": ">=21.0.0"
+  },
+  "dependencies": {
+    "node-appwrite": "^14.0.0",
+    "crypto-js": "^4.2.0"
+  }
+}
