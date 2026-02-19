@@ -1,0 +1,13 @@
+{
+  "$schema": "https://appwrite.io/schema/1.0/function.json",
+  "name": "aiQuery",
+  "runtime": "node-21",
+  "execute": ["users"],
+  "events": [],
+  "timeout": 30,
+  "logging": true,
+  "entrypoint": "src/main.js",
+  "commands": "npm install",
+  "scopes": ["databases.read", "users.read"],
+  "ignore": ["node_modules", ".env"]
+}
